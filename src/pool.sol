@@ -59,12 +59,8 @@ contract UniswapV4Interactor is IUnlockCallback {
         
         (PoolKey memory key, int24 tickLower, int24 tickUpper, uint128 liquidityAmount) = 
             abi.decode(data, (PoolKey, int24, int24, uint128));
-
-        // First sync currencies to make sure the pool knows about our tokens
-        poolManager.sync(key.currency0);
-        poolManager.sync(key.currency1);
         
-        // Add liquidity to the pool
+        // Add liquidity to the pool and get the delta (how many tokens we need to provide)
         (BalanceDelta delta,) = poolManager.modifyLiquidity(
             key,
             IPoolManager.ModifyLiquidityParams({
@@ -76,8 +72,36 @@ contract UniswapV4Interactor is IUnlockCallback {
             ""
         );
         
-        // Now pay what we owe to the pool
-        poolManager.settle();
+        // In V4, negative delta means we owe tokens to the pool
+        // For each currency, we need to sync, transfer tokens, then settle
+        
+        int128 amount0 = delta.amount0();
+        if (amount0 < 0) {
+            // First sync the currency
+            poolManager.sync(key.currency0);
+            
+            // Get token address and transfer tokens to the pool
+            address token0 = Currency.unwrap(key.currency0);
+            uint256 amountNeeded = uint256(uint128(-amount0));
+            IERC20(token0).transfer(address(poolManager), amountNeeded);
+            
+            // Now settle with the pool
+            poolManager.settle();
+        }
+        
+        int128 amount1 = delta.amount1();
+        if (amount1 < 0) {
+            // First sync the currency
+            poolManager.sync(key.currency1);
+            
+            // Get token address and transfer tokens to the pool
+            address token1 = Currency.unwrap(key.currency1);
+            uint256 amountNeeded = uint256(uint128(-amount1));
+            IERC20(token1).transfer(address(poolManager), amountNeeded);
+            
+            // Now settle with the pool
+            poolManager.settle();
+        }
         
         return "";
     }

@@ -1,0 +1,211 @@
+No files changed, compilation skipped
+
+Ran 3 tests for test/UniswapV4Interactor.t.sol:UniswapV4InteractorTest
+[FAIL: CurrencyNotSettled()] test_AddLiquidity() (gas: 405314)
+Traces:
+  [9918817] UniswapV4InteractorTest::setUp()
+    ├─ [805368] → new Token@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 3554 bytes of code
+    ├─ [805368] → new Token@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 3554 bytes of code
+    ├─ [6957545] → new PoolManager@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(user: 0x0000000000000000000000000000000000000000, newOwner: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 34623 bytes of code
+    ├─ [1070250] → new UniswapV4Interactor@0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9
+    │   └─ ← [Return] 5340 bytes of code
+    ├─ [3850] Token::transfer(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000000 [1e22])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000 [1e22])
+    │   └─ ← [Return] true
+    ├─ [3850] Token::transfer(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000000 [1e22])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000 [1e22])
+    │   └─ ← [Return] true
+    ├─ [25750] Token::transfer(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 2000000000000000000000 [2e21])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 2000000000000000000000 [2e21])
+    │   └─ ← [Return] true
+    ├─ [25750] Token::transfer(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 2000000000000000000000 [2e21])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 2000000000000000000000 [2e21])
+    │   └─ ← [Return] true
+    └─ ← [Stop]
+
+  [405314] UniswapV4InteractorTest::test_AddLiquidity()
+    ├─ [0] VM::startPrank(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9])
+    │   └─ ← [Return]
+    ├─ [25298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   └─ ← [Return] true
+    ├─ [25298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   └─ ← [Return] true
+    ├─ [33294] PoolManager::initialize(PoolKey({ currency0: 0x2e234DAe75C793f67A35089C9d99245E1C58470b, currency1: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000 }), 79228162514264337593543950336 [7.922e28])
+    │   ├─ emit Initialize(id: 0x805f7d66d6420a35734d538b3b71f241d8faf3a3176f77817b3fd94ae6624a9f, currency0: Token: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], currency1: Token: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000, sqrtPriceX96: 79228162514264337593543950336 [7.922e28], tick: 0)
+    │   └─ ← [Return] 0
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(0, 0, "Pool should initialize at tick 0") [staticcall]
+    │   └─ ← [Return]
+    ├─ [2851] Token::balanceOf(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
+    │   └─ ← [Return] 998000000000000000000000 [9.98e23]
+    ├─ [2851] Token::balanceOf(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
+    │   └─ ← [Return] 998000000000000000000000 [9.98e23]
+    ├─ [0] VM::startPrank(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return]
+    ├─ [25298] Token::approve(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [25298] Token::approve(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [232022] UniswapV4Interactor::addLiquidity(-120, 120, 1000000000000000000000 [1e21])
+    │   ├─ [12519] Token::transferFrom(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   │   └─ ← [Return] true
+    │   ├─ [12519] Token::transferFrom(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   │   └─ ← [Return] true
+    │   ├─ [3298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   └─ ← [Return] true
+    │   ├─ [3298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   └─ ← [Return] true
+    │   ├─ [193254] PoolManager::unlock(0x0000000000000000000000002e234dae75c793f67a35089c9d99245e1c58470b0000000000000000000000005615deb798bb3e4dfa0139dfa1b3d433cc23b72f0000000000000000000000000000000000000000000000000000000000000bb8000000000000000000000000000000000000000000000000000000000000003c0000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff88000000000000000000000000000000000000000000000000000000000000007800000000000000000000000000000000000000000000003635c9adc5dea00000)
+    │   │   ├─ [190828] UniswapV4Interactor::unlockCallback(0x0000000000000000000000002e234dae75c793f67a35089c9d99245e1c58470b0000000000000000000000005615deb798bb3e4dfa0139dfa1b3d433cc23b72f0000000000000000000000000000000000000000000000000000000000000bb8000000000000000000000000000000000000000000000000000000000000003c0000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff88000000000000000000000000000000000000000000000000000000000000007800000000000000000000000000000000000000000000003635c9adc5dea00000)
+    │   │   │   ├─ [4523] PoolManager::sync(Token: [0x2e234DAe75C793f67A35089C9d99245E1C58470b])
+    │   │   │   │   ├─ [2851] Token::balanceOf(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   │   │   │   └─ ← [Return] 0
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ [4523] PoolManager::sync(Token: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f])
+    │   │   │   │   ├─ [2851] Token::balanceOf(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   │   │   │   └─ ← [Return] 0
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ [170949] PoolManager::modifyLiquidity(PoolKey({ currency0: 0x2e234DAe75C793f67A35089C9d99245E1C58470b, currency1: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000 }), ModifyLiquidityParams({ tickLower: -120, tickUpper: 120, liquidityDelta: 1000000000000000000000 [1e21], salt: 0x0000000000000000000000000000000000000000000000000000000000000000 }), 0x)
+    │   │   │   │   ├─ emit ModifyLiquidity(id: 0x805f7d66d6420a35734d538b3b71f241d8faf3a3176f77817b3fd94ae6624a9f, sender: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], tickLower: -120, tickUpper: 120, liquidityDelta: 1000000000000000000000 [1e21], salt: 0x0000000000000000000000000000000000000000000000000000000000000000)
+    │   │   │   │   └─ ← [Return] -2035479883446581736713763024186656114310906610704987985287 [-2.035e57], 0
+    │   │   │   ├─ [3085] PoolManager::settle()
+    │   │   │   │   ├─ [851] Token::balanceOf(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   │   │   │   └─ ← [Return] 0
+    │   │   │   │   └─ ← [Return] 0
+    │   │   │   └─ ← [Return] 0x
+    │   │   └─ ← [Revert] CurrencyNotSettled()
+    │   └─ ← [Revert] CurrencyNotSettled()
+    └─ ← [Revert] CurrencyNotSettled()
+
+[FAIL: CurrencyNotSettled()] test_AddLiquidityWithParameters() (gas: 405634)
+Traces:
+  [9918817] UniswapV4InteractorTest::setUp()
+    ├─ [805368] → new Token@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 3554 bytes of code
+    ├─ [805368] → new Token@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 3554 bytes of code
+    ├─ [6957545] → new PoolManager@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(user: 0x0000000000000000000000000000000000000000, newOwner: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 34623 bytes of code
+    ├─ [1070250] → new UniswapV4Interactor@0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9
+    │   └─ ← [Return] 5340 bytes of code
+    ├─ [3850] Token::transfer(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000000 [1e22])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000 [1e22])
+    │   └─ ← [Return] true
+    ├─ [3850] Token::transfer(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000000 [1e22])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000 [1e22])
+    │   └─ ← [Return] true
+    ├─ [25750] Token::transfer(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 2000000000000000000000 [2e21])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 2000000000000000000000 [2e21])
+    │   └─ ← [Return] true
+    ├─ [25750] Token::transfer(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 2000000000000000000000 [2e21])
+    │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 2000000000000000000000 [2e21])
+    │   └─ ← [Return] true
+    └─ ← [Stop]
+
+  [405634] UniswapV4InteractorTest::test_AddLiquidityWithParameters()
+    ├─ [0] VM::startPrank(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9])
+    │   └─ ← [Return]
+    ├─ [25298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   └─ ← [Return] true
+    ├─ [25298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   └─ ← [Return] true
+    ├─ [33294] PoolManager::initialize(PoolKey({ currency0: 0x2e234DAe75C793f67A35089C9d99245E1C58470b, currency1: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000 }), 79228162514264337593543950336 [7.922e28])
+    │   ├─ emit Initialize(id: 0x805f7d66d6420a35734d538b3b71f241d8faf3a3176f77817b3fd94ae6624a9f, currency0: Token: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], currency1: Token: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000, sqrtPriceX96: 79228162514264337593543950336 [7.922e28], tick: 0)
+    │   └─ ← [Return] 0
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(0, 0, "Pool should initialize at tick 0") [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::startPrank(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return]
+    ├─ [25298] Token::approve(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [25298] Token::approve(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [236382] UniswapV4Interactor::addLiquidity(-120, 120, 167175499835819766909277 [1.671e23])
+    │   ├─ [14519] Token::transferFrom(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   │   └─ ← [Return] true
+    │   ├─ [14519] Token::transferFrom(UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000000000 [1e21])
+    │   │   ├─ emit Transfer(from: UniswapV4InteractorTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 1000000000000000000000 [1e21])
+    │   │   └─ ← [Return] true
+    │   ├─ [3298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   └─ ← [Return] true
+    │   ├─ [3298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   │   └─ ← [Return] true
+    │   ├─ [193614] PoolManager::unlock(0x0000000000000000000000002e234dae75c793f67a35089c9d99245e1c58470b0000000000000000000000005615deb798bb3e4dfa0139dfa1b3d433cc23b72f0000000000000000000000000000000000000000000000000000000000000bb8000000000000000000000000000000000000000000000000000000000000003c0000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8800000000000000000000000000000000000000000000000000000000000000780000000000000000000000000000000000000000000023669a1d06eb4af5095d)
+    │   │   ├─ [191188] UniswapV4Interactor::unlockCallback(0x0000000000000000000000002e234dae75c793f67a35089c9d99245e1c58470b0000000000000000000000005615deb798bb3e4dfa0139dfa1b3d433cc23b72f0000000000000000000000000000000000000000000000000000000000000bb8000000000000000000000000000000000000000000000000000000000000003c0000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8800000000000000000000000000000000000000000000000000000000000000780000000000000000000000000000000000000000000023669a1d06eb4af5095d)
+    │   │   │   ├─ [4523] PoolManager::sync(Token: [0x2e234DAe75C793f67A35089C9d99245E1C58470b])
+    │   │   │   │   ├─ [2851] Token::balanceOf(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   │   │   │   └─ ← [Return] 0
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ [4523] PoolManager::sync(Token: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f])
+    │   │   │   │   ├─ [2851] Token::balanceOf(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   │   │   │   └─ ← [Return] 0
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ [171309] PoolManager::modifyLiquidity(PoolKey({ currency0: 0x2e234DAe75C793f67A35089C9d99245E1C58470b, currency1: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000 }), ModifyLiquidityParams({ tickLower: -120, tickUpper: 120, liquidityDelta: 167175499835819766909277 [1.671e23], salt: 0x0000000000000000000000000000000000000000000000000000000000000000 }), 0x)
+    │   │   │   │   ├─ emit ModifyLiquidity(id: 0x805f7d66d6420a35734d538b3b71f241d8faf3a3176f77817b3fd94ae6624a9f, sender: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], tickLower: -120, tickUpper: 120, liquidityDelta: 167175499835819766909277 [1.671e23], salt: 0x0000000000000000000000000000000000000000000000000000000000000000)
+    │   │   │   │   └─ ← [Return] -340282366920938463463034325064847272993536625392568231788544 [-3.402e59], 0
+    │   │   │   ├─ [3085] PoolManager::settle()
+    │   │   │   │   ├─ [851] Token::balanceOf(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   │   │   │   └─ ← [Return] 0
+    │   │   │   │   └─ ← [Return] 0
+    │   │   │   └─ ← [Return] 0x
+    │   │   └─ ← [Revert] CurrencyNotSettled()
+    │   └─ ← [Revert] CurrencyNotSettled()
+    └─ ← [Revert] CurrencyNotSettled()
+
+[PASS] test_Initialize() (gas: 109001)
+Traces:
+  [109001] UniswapV4InteractorTest::test_Initialize()
+    ├─ [0] VM::startPrank(UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9])
+    │   └─ ← [Return]
+    ├─ [25298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   └─ ← [Return] true
+    ├─ [25298] Token::approve(PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   ├─ emit Approval(owner: UniswapV4Interactor: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], spender: PoolManager: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
+    │   └─ ← [Return] true
+    ├─ [33294] PoolManager::initialize(PoolKey({ currency0: 0x2e234DAe75C793f67A35089C9d99245E1C58470b, currency1: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000 }), 79228162514264337593543950336 [7.922e28])
+    │   ├─ emit Initialize(id: 0x805f7d66d6420a35734d538b3b71f241d8faf3a3176f77817b3fd94ae6624a9f, currency0: Token: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], currency1: Token: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], fee: 3000, tickSpacing: 60, hooks: 0x0000000000000000000000000000000000000000, sqrtPriceX96: 79228162514264337593543950336 [7.922e28], tick: 0)
+    │   └─ ← [Return] 0
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(0, 0, "Pool should initialize at tick 0") [staticcall]
+    │   └─ ← [Return]
+    └─ ← [Stop]
+
+Suite result: FAILED. 1 passed; 2 failed; 0 skipped; finished in 1.73ms (1.51ms CPU time)
+
+Ran 1 test suite in 5.72ms (1.73ms CPU time): 1 tests passed, 2 failed, 0 skipped (3 total tests)
+
+Failing tests:
+Encountered 2 failing tests in test/UniswapV4Interactor.t.sol:UniswapV4InteractorTest
+[FAIL: CurrencyNotSettled()] test_AddLiquidity() (gas: 405314)
+[FAIL: CurrencyNotSettled()] test_AddLiquidityWithParameters() (gas: 405634)
+
+Encountered a total of 2 failing tests, 1 tests succeeded
