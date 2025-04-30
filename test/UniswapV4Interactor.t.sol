@@ -37,7 +37,7 @@ contract UniswapV4InteractorTest is Test {
         tokenB = new Token("Token B", "TKNB", 1000000e18);
         
         // Deploy the pool manager
-        poolManager = new PoolManager(500000);
+        poolManager = new PoolManager(address(this));
         
         // Deploy the interactor
         interactor = new UniswapV4Interactor(
@@ -56,10 +56,13 @@ contract UniswapV4InteractorTest is Test {
     }
 
     function test_Initialize() public {
+        // Sort tokens by address to ensure correct order
+        (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
+        
         // Create pool key
         PoolKey memory key = PoolKey({
-            currency0: Currency.wrap(address(tokenA)),
-            currency1: Currency.wrap(address(tokenB)),
+            currency0: Currency.wrap(token0),
+            currency1: Currency.wrap(token1),
             fee: FEE,
             tickSpacing: TICK_SPACING,
             hooks: IHooks(address(0))
@@ -75,6 +78,11 @@ contract UniswapV4InteractorTest is Test {
         
         // Verify pool was initialized
         assertEq(tick, 0, "Pool should initialize at tick 0");
+    }
+    
+    // Helper function to sort tokens by address
+    function sortTokens(address tokenA, address tokenB) internal pure returns (address, address) {
+        return tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
     }
 
     function test_AddLiquidity() public {
@@ -101,10 +109,11 @@ contract UniswapV4InteractorTest is Test {
         assertEq(initialTokenABalance - finalTokenABalance, 1000e18, "Token A should be transferred");
         assertEq(initialTokenBBalance - finalTokenBBalance, 1000e18, "Token B should be transferred");
         
-        // Create pool key to query position
+        // Create pool key to query position - using sorted tokens
+        (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
         PoolKey memory key = PoolKey({
-            currency0: Currency.wrap(address(tokenA)),
-            currency1: Currency.wrap(address(tokenB)),
+            currency0: Currency.wrap(token0),
+            currency1: Currency.wrap(token1),
             fee: FEE,
             tickSpacing: TICK_SPACING,
             hooks: IHooks(address(0))
@@ -141,10 +150,11 @@ contract UniswapV4InteractorTest is Test {
         interactor.addLiquidity(TICK_LOWER, TICK_UPPER, liquidity);
         vm.stopPrank();
         
-        // Create pool key to check results
+        // Create pool key to check results - using sorted tokens
+        (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
         PoolKey memory key = PoolKey({
-            currency0: Currency.wrap(address(tokenA)),
-            currency1: Currency.wrap(address(tokenB)),
+            currency0: Currency.wrap(token0),
+            currency1: Currency.wrap(token1),
             fee: FEE,
             tickSpacing: TICK_SPACING,
             hooks: IHooks(address(0))
