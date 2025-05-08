@@ -32,34 +32,25 @@ contract UniswapV4Interactor is IUnlockCallback {
         // Take tokens from the caller
         tokenA.transferFrom(msg.sender, address(this), 1000e18);
         tokenB.transferFrom(msg.sender, address(this), 1000e18);
-        
+
         // Approve maximum amount to the pool manager
         tokenA.approve(address(poolManager), type(uint256).max);
         tokenB.approve(address(poolManager), type(uint256).max);
 
-        // Sort tokens by address to ensure correct order
-        (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
-        
-        PoolKey memory key = PoolKey({
-            currency0: Currency.wrap(token0),
-            currency1: Currency.wrap(token1),
-            fee: FEE,
-            tickSpacing: TICK_SPACING,
-            hooks: IHooks(address(0))
-        });
+        // Create the pool key with sorted tokens
+        PoolKey memory key = createPoolKey();
 
         bytes memory callbackData = abi.encode(key, tickLower, tickUpper, liquidityAmount);
-
         poolManager.unlock(callbackData);
     }
-    
+
     /// @inheritdoc IUnlockCallback
     function unlockCallback(bytes calldata data) external override returns (bytes memory) {
         require(msg.sender == address(poolManager), "Unauthorized");
-        
-        (PoolKey memory key, int24 tickLower, int24 tickUpper, uint128 liquidityAmount) = 
+
+        (PoolKey memory key, int24 tickLower, int24 tickUpper, uint128 liquidityAmount) =
             abi.decode(data, (PoolKey, int24, int24, uint128));
-        
+
         // Add liquidity to the pool and get the delta (how many tokens we need to provide)
         (BalanceDelta delta,) = poolManager.modifyLiquidity(
             key,
@@ -71,43 +62,45 @@ contract UniswapV4Interactor is IUnlockCallback {
             }),
             ""
         );
-        
-        // In V4, negative delta means we owe tokens to the pool
-        // For each currency, we need to sync, transfer tokens, then settle
-        
-        int128 amount0 = delta.amount0();
-        if (amount0 < 0) {
-            // First sync the currency
-            poolManager.sync(key.currency0);
-            
-            // Get token address and transfer tokens to the pool
-            address token0 = Currency.unwrap(key.currency0);
-            uint256 amountNeeded = uint256(uint128(-amount0));
-            IERC20(token0).transfer(address(poolManager), amountNeeded);
-            
-            // Now settle with the pool
-            poolManager.settle();
-        }
-        
-        int128 amount1 = delta.amount1();
-        if (amount1 < 0) {
-            // First sync the currency
-            poolManager.sync(key.currency1);
-            
-            // Get token address and transfer tokens to the pool
-            address token1 = Currency.unwrap(key.currency1);
-            uint256 amountNeeded = uint256(uint128(-amount1));
-            IERC20(token1).transfer(address(poolManager), amountNeeded);
-            
-            // Now settle with the pool
-            poolManager.settle();
-        }
-        
+
+        // Handle both token settlements with a helper function
+        handleTokenSettlement(key.currency0, delta.amount0());
+        handleTokenSettlement(key.currency1, delta.amount1());
+
         return "";
     }
-    
+
+    // Helper function to create a pool key with sorted tokens
+    function createPoolKey() internal view returns (PoolKey memory) {
+        (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
+
+        return PoolKey({
+            currency0: Currency.wrap(token0),
+            currency1: Currency.wrap(token1),
+            fee: FEE,
+            tickSpacing: TICK_SPACING,
+            hooks: IHooks(address(0))
+        });
+    }
+
+    // Helper function to handle token settlement
+    function handleTokenSettlement(Currency currency, int128 amount) internal {
+        if (amount < 0) {
+            // First sync the currency
+            poolManager.sync(currency);
+
+            // Get token address and transfer tokens to the pool
+            address token = Currency.unwrap(currency);
+            uint256 amountNeeded = uint256(uint128(-amount));
+            IERC20(token).transfer(address(poolManager), amountNeeded);
+
+            // Now settle with the pool
+            poolManager.settle();
+        }
+    }
+
     // Helper function to sort tokens by address
-    function sortTokens(address tokenA, address tokenB) internal pure returns (address, address) {
-        return tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
+    function sortTokens(address token0, address token1) internal pure returns (address, address) {
+        return token0 < token1 ? (token0, token1) : (token1, token0);
     }
 }

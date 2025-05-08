@@ -35,21 +35,17 @@ contract UniswapV4InteractorTest is Test {
         // Deploy tokens
         tokenA = new Token("Token A", "TKNA", 1000000e18);
         tokenB = new Token("Token B", "TKNB", 1000000e18);
-        
+
         // Deploy the pool manager
         poolManager = new PoolManager(address(this));
-        
+
         // Deploy the interactor
-        interactor = new UniswapV4Interactor(
-            address(poolManager),
-            address(tokenA),
-            address(tokenB)
-        );
-        
+        interactor = new UniswapV4Interactor(address(poolManager), address(tokenA), address(tokenB));
+
         // Transfer tokens to the test contract for testing
         tokenA.transfer(address(this), 10000e18);
         tokenB.transfer(address(this), 10000e18);
-        
+
         // Transfer tokens to the interactor for adding liquidity
         tokenA.transfer(address(interactor), 2000e18);
         tokenB.transfer(address(interactor), 2000e18);
@@ -58,7 +54,7 @@ contract UniswapV4InteractorTest is Test {
     function test_Initialize() public {
         // Sort tokens by address to ensure correct order
         (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
-        
+
         // Create pool key
         PoolKey memory key = PoolKey({
             currency0: Currency.wrap(token0),
@@ -67,103 +63,83 @@ contract UniswapV4InteractorTest is Test {
             tickSpacing: TICK_SPACING,
             hooks: IHooks(address(0))
         });
-        
+
         // Initialize the pool
         vm.startPrank(address(interactor));
         tokenA.approve(address(poolManager), type(uint256).max);
         tokenB.approve(address(poolManager), type(uint256).max);
-        
+
         int24 tick = poolManager.initialize(key, SQRT_PRICE_1_1);
         vm.stopPrank();
-        
+
         // Verify pool was initialized
         assertEq(tick, 0, "Pool should initialize at tick 0");
     }
-    
+
     // Helper function to sort tokens by address
-    function sortTokens(address tokenA, address tokenB) internal pure returns (address, address) {
-        return tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
+    function sortTokens(address token0, address token1) internal pure returns (address, address) {
+        return token0 < token1 ? (token0, token1) : (token1, token0);
     }
 
     function test_AddLiquidity() public {
         // Initialize the pool first
         test_Initialize();
-        
+
         // Initial balances
         uint256 initialTokenABalance = tokenA.balanceOf(address(this));
         uint256 initialTokenBBalance = tokenB.balanceOf(address(this));
-        
+
         // Prepare to add liquidity
         vm.startPrank(address(this));
         tokenA.approve(address(interactor), 1000e18);
         tokenB.approve(address(interactor), 1000e18);
-        
+
         // Add liquidity through the interactor
         interactor.addLiquidity(TICK_LOWER, TICK_UPPER, LIQUIDITY_AMOUNT);
         vm.stopPrank();
-        
+
         // Verify tokens were transferred
         uint256 finalTokenABalance = tokenA.balanceOf(address(this));
         uint256 finalTokenBBalance = tokenB.balanceOf(address(this));
-        
+
         assertEq(initialTokenABalance - finalTokenABalance, 1000e18, "Token A should be transferred");
         assertEq(initialTokenBBalance - finalTokenBBalance, 1000e18, "Token B should be transferred");
-        
-        // Create pool key to query position - using sorted tokens
-        (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
-        PoolKey memory key = PoolKey({
-            currency0: Currency.wrap(token0),
-            currency1: Currency.wrap(token1),
-            fee: FEE,
-            tickSpacing: TICK_SPACING,
-            hooks: IHooks(address(0))
-        });
-        
+
         // We can't easily query the position directly, but we can check that tokens were transferred
         // to the pool manager through the balances
         uint256 poolManagerTokenA = tokenA.balanceOf(address(poolManager));
         uint256 poolManagerTokenB = tokenB.balanceOf(address(poolManager));
-        
+
         assertGt(poolManagerTokenA, 0, "Pool manager should have Token A");
         assertGt(poolManagerTokenB, 0, "Pool manager should have Token B");
     }
-    
+
     function test_AddLiquidityWithParameters() public {
         // Initialize the pool first
         test_Initialize();
-        
+
         // Calculate liquidity from token amounts
         uint128 liquidity = LiquidityAmounts.getLiquidityForAmounts(
-            SQRT_PRICE_1_1, 
+            SQRT_PRICE_1_1,
             TickMath.getSqrtPriceAtTick(TICK_LOWER),
             TickMath.getSqrtPriceAtTick(TICK_UPPER),
             1000e18,
             1000e18
         );
-        
+
         // Prepare to add liquidity
         vm.startPrank(address(this));
         tokenA.approve(address(interactor), 1000e18);
         tokenB.approve(address(interactor), 1000e18);
-        
+
         // Add liquidity with specific parameters
         interactor.addLiquidity(TICK_LOWER, TICK_UPPER, liquidity);
         vm.stopPrank();
-        
-        // Create pool key to check results - using sorted tokens
-        (address token0, address token1) = sortTokens(address(tokenA), address(tokenB));
-        PoolKey memory key = PoolKey({
-            currency0: Currency.wrap(token0),
-            currency1: Currency.wrap(token1),
-            fee: FEE,
-            tickSpacing: TICK_SPACING,
-            hooks: IHooks(address(0))
-        });
-        
+
         // Verify tokens were transferred to the pool manager
         uint256 poolManagerTokenA = tokenA.balanceOf(address(poolManager));
         uint256 poolManagerTokenB = tokenB.balanceOf(address(poolManager));
-        
+
         assertGt(poolManagerTokenA, 0, "Pool manager should have Token A");
         assertGt(poolManagerTokenB, 0, "Pool manager should have Token B");
     }
