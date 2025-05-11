@@ -3,7 +3,7 @@
 # Private key: 0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001
 
 
-.PHONY: all build test test-verbosity test-single clean format gas-snapshot anvil deploy deploy-anvil create-pool update-deps help run run-local check-balances wrap-eth add-liquidity deploy-with-test-tokens
+.PHONY: all build test test-verbosity test-single clean format gas-snapshot anvil deploy deploy-anvil create-pool update-deps help run run-local check-balances wrap-eth add-liquidity deploy-with-test-tokens deploy-tokens
 
 all: build
 
@@ -76,6 +76,10 @@ add-liquidity:
 # Deploy test tokens, create pool, and add liquidity all in one script
 deploy-with-test-tokens:
 	PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 ./run_deploy_and_add.sh
+	
+# Deploy only test tokens (more reliable)
+deploy-tokens:
+	PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 ./run_deploy_tokens.sh
 
 # Check token balances
 check-balances:
@@ -104,6 +108,7 @@ help:
 	@echo "  run-local           - Run deployment on local Anvil instance"
 	@echo "  add-liquidity       - Add liquidity to the previously created pool on Sepolia"
 	@echo "  deploy-with-test-tokens - Deploy test tokens, create pool and add liquidity in one go"
+	@echo "  deploy-tokens       - Deploy only test tokens (more reliable)"
 	@echo "  check-balances      - Check token balances for the account on Sepolia"
 	@echo "  update-deps         - Update dependencies"
 	@echo "  help            - Show this help message"
