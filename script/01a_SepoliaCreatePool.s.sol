@@ -78,20 +78,21 @@ contract SepoliaCreatePoolScript is Script, Constants, SepoliaConfig {
         console.log("Token0 max amount:", amount0Max);
         console.log("Token1 max amount:", amount1Max);
 
-        // Use msg.sender to avoid script contract issues
-        (bytes memory actions, bytes[] memory mintParams) =
-            _mintLiquidityParams(pool, tickLower, tickUpper, liquidity, amount0Max, amount1Max, msg.sender, hookData);
+        // Only initializing the pool without adding liquidity, so we don't need these parameters
+        // Commented out to avoid unused variable warnings
+        // (bytes memory actions, bytes[] memory mintParams) =
+        //    _mintLiquidityParams(pool, tickLower, tickUpper, liquidity, amount0Max, amount1Max, msg.sender, hookData);
 
-        // multicall parameters
-        bytes[] memory params = new bytes[](2);
+        // multicall parameters - only initializing the pool, not adding liquidity
+        bytes[] memory params = new bytes[](1);
 
-        // initialize pool
+        // initialize pool only
         params[0] = abi.encodeWithSelector(posm.initializePool.selector, pool, startingPrice, hookData);
-
-        // mint liquidity
-        params[1] = abi.encodeWithSelector(
-            posm.modifyLiquidities.selector, abi.encode(actions, mintParams), block.timestamp + 60
-        );
+        
+        // Commenting out the liquidity addition since we don't have tokens
+        // params[1] = abi.encodeWithSelector(
+        //     posm.modifyLiquidities.selector, abi.encode(actions, mintParams), block.timestamp + 60
+        // );
 
         // if the pool is an ETH pair, native tokens are to be transferred
         uint256 valueToPass = currency0.isAddressZero() ? amount0Max : 0;
