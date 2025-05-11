@@ -3,7 +3,7 @@
 # Private key: 0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001
 
 
-.PHONY: all build test test-verbosity test-single clean format gas-snapshot anvil deploy deploy-anvil create-pool update-deps help run run-local
+.PHONY: all build test test-verbosity test-single clean format gas-snapshot anvil deploy deploy-anvil create-pool update-deps help run run-local check-balances wrap-eth
 
 all: build
 
@@ -63,11 +63,19 @@ update-deps:
 
 # Run deployment on Sepolia testnet
 run:
-	RPC_URL_11155111=https://ethereum-sepolia.publicnode.com PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 ./run_create_pool.sh 11155111
+	PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 ./run_create_pool.sh
 
 # Run deployment on local Anvil instance
 run-local:
 	./run_create_pool.sh 31337
+
+# Check token balances
+check-balances:
+	PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 forge script script/CheckTokenBalances.s.sol --rpc-url https://ethereum-sepolia.rpc.subquery.network/public -vvv
+
+# Wrap ETH to WETH
+wrap-eth:
+	PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 forge script script/WrapETH.s.sol --rpc-url https://ethereum-sepolia.rpc.subquery.network/public --broadcast -vvv
 
 # Show help
 help:
@@ -86,5 +94,6 @@ help:
 	@echo "  create-pool     - Create pool and mint liquidity [CHAIN_ID=<chain-id>]"
 	@echo "  run             - Run deployment on Sepolia testnet (chain ID 11155111)"
 	@echo "  run-local       - Run deployment on local Anvil instance"
+	@echo "  check-balances  - Check token balances for the account on Sepolia"
 	@echo "  update-deps     - Update dependencies"
 	@echo "  help            - Show this help message"

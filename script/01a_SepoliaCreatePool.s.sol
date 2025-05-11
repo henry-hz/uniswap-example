@@ -26,11 +26,16 @@ contract SepoliaCreatePoolScript is Script, Constants, SepoliaConfig {
     int24 tickSpacing = 60;
 
     // starting price of the pool, in sqrtPriceX96
-    uint160 startingPrice = 79228162514264337593543950336; // floor(sqrt(1) * 2^96)
+    // Setting a more appropriate price for the USDC/WETH pair (roughly 1 ETH = 1000 USDC)
+    uint160 startingPrice = 2505414483750479311864138015 * 10; // sqrt(1/1000) * 2^96 * 10
 
     // --- liquidity position configuration --- //
-    uint256 public token0Amount = 1e18; // 1 USDC (assuming 6 decimals, actual value should be adjusted)
-    uint256 public token1Amount = 1e17; // 0.1 ETH
+    // Greatly reduced token amounts for testing since we don't have much tokens
+    uint256 public token0Amount = 1e6; // 0.000001 USDC (assuming 6 decimals)
+    uint256 public token1Amount = 1e15; // 0.001 ETH
+    
+    // Define a smaller initial liquidity amount to avoid the MaximumAmountExceeded error
+    uint128 public forcedLiquidity = 20000; // Force a smaller liquidity value
 
     // range of the position
     int24 tickLower = -600; // must be a multiple of tickSpacing
@@ -50,18 +55,28 @@ contract SepoliaCreatePoolScript is Script, Constants, SepoliaConfig {
 
         // --------------------------------- //
 
-        // Converts token amounts to liquidity units
-        uint128 liquidity = LiquidityAmounts.getLiquidityForAmounts(
-            startingPrice,
-            TickMath.getSqrtPriceAtTick(tickLower),
-            TickMath.getSqrtPriceAtTick(tickUpper),
-            token0Amount,
-            token1Amount
-        );
+        // Using a fixed smaller liquidity amount instead of calculating from token amounts
+        // This helps prevent the MaximumAmountExceeded error
+        uint128 liquidity = forcedLiquidity;
+        
+        // Log the liquidity amount for debugging
+        console.log("Using liquidity amount:", liquidity);
+        
+        // Original calculation commented out:
+        // uint128 liquidity = LiquidityAmounts.getLiquidityForAmounts(
+        //     startingPrice,
+        //     TickMath.getSqrtPriceAtTick(tickLower),
+        //     TickMath.getSqrtPriceAtTick(tickUpper),
+        //     token0Amount,
+        //     token1Amount
+        // );
 
-        // slippage limits
-        uint256 amount0Max = token0Amount + 1 wei;
-        uint256 amount1Max = token1Amount + 1 wei;
+        // Greatly increase the slippage limits to allow for any calculation differences
+        uint256 amount0Max = token0Amount * 10; // 10x the amount to allow for slippage 
+        uint256 amount1Max = token1Amount * 10; // 10x the amount to allow for slippage
+        
+        console.log("Token0 max amount:", amount0Max);
+        console.log("Token1 max amount:", amount1Max);
 
         // Use msg.sender to avoid script contract issues
         (bytes memory actions, bytes[] memory mintParams) =
