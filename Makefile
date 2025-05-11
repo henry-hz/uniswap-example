@@ -3,7 +3,7 @@
 # Private key: 0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001
 
 
-.PHONY: all build test test-verbosity test-single clean format gas-snapshot anvil deploy deploy-anvil create-pool update-deps help run run-local check-balances wrap-eth
+.PHONY: all build test test-verbosity test-single clean format gas-snapshot anvil deploy deploy-anvil create-pool update-deps help run run-local check-balances wrap-eth add-liquidity deploy-with-test-tokens
 
 all: build
 
@@ -68,6 +68,14 @@ run:
 # Run deployment on local Anvil instance
 run-local:
 	./run_create_pool.sh 31337
+	
+# Add liquidity to the previously created pool on Sepolia
+add-liquidity:
+	PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 ./run_add_liquidity.sh
+	
+# Deploy test tokens, create pool, and add liquidity all in one script
+deploy-with-test-tokens:
+	PRIVATE_KEY=0x85fc0d4c5af249a7c637fb523f92a2b2515a7f2a405566c205dfbd4d67f78001 ./run_deploy_and_add.sh
 
 # Check token balances
 check-balances:
@@ -92,8 +100,10 @@ help:
 	@echo "  deploy          - Deploy script (SCRIPT=<script-path> RPC_URL=<rpc-url> PRIVATE_KEY=<private-key>)"
 	@echo "  deploy-anvil    - Deploy on local Anvil chain"
 	@echo "  create-pool     - Create pool and mint liquidity [CHAIN_ID=<chain-id>]"
-	@echo "  run             - Run deployment on Sepolia testnet (chain ID 11155111)"
-	@echo "  run-local       - Run deployment on local Anvil instance"
-	@echo "  check-balances  - Check token balances for the account on Sepolia"
-	@echo "  update-deps     - Update dependencies"
+	@echo "  run                 - Run deployment on Sepolia testnet (chain ID 11155111)"
+	@echo "  run-local           - Run deployment on local Anvil instance"
+	@echo "  add-liquidity       - Add liquidity to the previously created pool on Sepolia"
+	@echo "  deploy-with-test-tokens - Deploy test tokens, create pool and add liquidity in one go"
+	@echo "  check-balances      - Check token balances for the account on Sepolia"
+	@echo "  update-deps         - Update dependencies"
 	@echo "  help            - Show this help message"
